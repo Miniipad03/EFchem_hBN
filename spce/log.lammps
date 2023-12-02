@@ -1,0 +1,22 @@
+LAMMPS (2 Aug 2023 - Update 1)
+OMP_NUM_THREADS environment is not set. Defaulting to 1 thread. (src/comm.cpp:98)
+  using 1 OpenMP thread(s) per MPI task
+Loaded 1 plugins from C:\Users\bb105\AppData\Local\LAMMPS 64-bit 2Aug2023\plugins
+# reference: https://docs.lammps.org/Howto_spc.html
+units real
+atom_style full
+region box block -8 8 -8 8 -8 8
+create_box 3 box
+Created orthogonal box = (-8 -8 -8) to (8 8 8)
+  1 by 1 by 1 MPI processor grid
+
+pair_style  hybrid/overlay ilp/graphene/hbn 16.0 1
+pair_coeff  * * ilp/graphene/hbn  BNCH.ILP B N C
+Reading ilp/graphene/hbn potential file BNCH.ILP with DATE: 2020-01-16
+WARNING: Converting ilp/graphene/hbn potential in metal units to real units (src/potential_file_reader.cpp:289)
+
+pair_style  hybrid/overlay rebo tersoff ilp/graphene/hbn 16.0 coul/shield 16.0
+pair_coeff  * * rebo              CH.rebo     NULL NULL C
+Reading rebo potential file CH.rebo with DATE: 2018-7-3
+ERROR on proc 0: rebo potential file CH.rebo requires metal units but real units are in use (src/potential_file_reader.cpp:283)
+Last command: pair_coeff  * * rebo              CH.rebo     NULL NULL C

@@ -1,0 +1,40 @@
+# reference: https://docs.lammps.org/Howto_spc.html
+# contributions:
+# Cite as W. Ouyang and D. Mandelli and M. Urbakh and O. Hod,
+# "Nanoserpents: Graphene Nanoribbon Motion on Two-Dimensional Hexagonal Materials.",
+# Nano Letters., 18:6009, 2018. 
+
+
+units metal
+atom_style full
+newton          on
+dimension       3
+boundary        p p p
+
+read_data	hBN.in.data
+change_box all triclinic
+
+mass           1 10.811
+mass           2 14.0067
+
+## Potential
+
+pair_style  hybrid/overlay  extep  ilp/graphene/hbn 16.0 coul/shield 16.0 1
+
+pair_coeff  * * extep          BN_new_formatted.extep   B N  
+
+pair_coeff  * * ilp/graphene/hbn BNCH.ILP  B N 
+pair_coeff  1 1 coul/shield 0.70
+pair_coeff  1 2 coul/shield 0.69498201415576216335
+pair_coeff  2 2 coul/shield 0.69
+
+compute 0 all pair ilp/graphene/hbn
+variable Evdw  equal c_0[1]
+variable Erep  equal c_0[2]
+thermo_style custom step temp epair v_Erep v_Evdw
+
+timestep 1.0
+run 10000
+
+
+dump myDump all custom 100 output.lammpstrj id type x y z

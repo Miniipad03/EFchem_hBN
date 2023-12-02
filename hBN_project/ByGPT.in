@@ -1,0 +1,47 @@
+# Simulation setup
+units           metal
+newton          on
+atom_style      full
+dimension       3
+boundary        p p p
+
+# Box and atom creation
+read_data       hBN.in.data
+change_box all triclinic
+
+mass            1 10.811 # B
+mass            2 14.0067 # N
+
+# Potential
+pair_style      hybrid/overlay extep ilp/graphene/hbn 16.0 coul/shield 16.0 1
+pair_coeff      * * extep          BN_new_formatted.extep B N  
+pair_coeff      * * ilp/graphene/hbn BNCH.ILP B N 
+pair_coeff      1 1 coul/shield 0.70
+pair_coeff      1 2 coul/shield 0.69498201415576216335
+pair_coeff      2 2 coul/shield 0.69
+
+# Neighbor update settings
+neighbor        0.5 bin
+neigh_modify    every 4
+neigh_modify    delay 0
+neigh_modify    check yes page 800000 one 80000
+
+# Timestep (slightly increased)
+timestep        0.003
+
+# Thermo settings
+thermo          1000
+thermo_style    custom step temp etotal pe press lx ly lz
+
+# Initialize velocities
+velocity        all create 300.0 12345 mom yes rot no dist gaussian
+
+# Time integration fix
+fix             1 all nve
+
+# Dump setup for VMD visualization (increased interval)
+dump            1 all atom 500 hBN.lammpstrj
+dump_modify     1 sort id
+
+# Running the simulation
+run             50000

@@ -1,0 +1,30 @@
+# LAMMPS Input Script Example
+
+# Initialization
+units real
+atom_style full
+
+# System Definition
+region myBox block 0 10 0 10 0 10
+create_box 2 myBox
+create_atoms 1 random 100 12345 myBox
+
+mass 1 1.0
+mass 2 16.0
+
+# Simulation Settings
+pair_style lj/cut 2.5
+pair_coeff 1 1 1.0 1.0 2.5
+pair_coeff 1 2 1.0 1.0 2.5
+pair_coeff 2 2 1.0 1.0 2.5
+
+neighbor 0.3 bin
+neigh_modify delay 5
+
+# Output Preferences
+thermo 100
+dump myOutput all atom 200 output.lammpstrj
+
+# Run Simulation
+timestep 0.005
+run 1000
