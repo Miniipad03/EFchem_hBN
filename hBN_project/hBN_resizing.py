@@ -1,19 +1,17 @@
 import re
 
-input_file = "./hBN.in.data"
-output_file = "./new_hBN.in.data"
+input_file = "./EFchem_hBN/hBN_project/hBN.in.data"
+output_file = "./EFchem_hBN/hBN_project/new_hBN.in.data"
 
-x_ratio, y_ratio, z_ratio = 1, 1, 0.15
+x_ratio, y_ratio, z_ratio = 1, 1, 0.10
 
 xlo, xhi = -3.9006362984379528e+01, 4.3344360484379528e+01
 ylo, yhi = -3.7533609150731806e+01, 4.2542710950745985e+01
 zlo, zhi = -3.2057278850357676e+01, 4.5329282050343650e+01
 
 xlen, ylen, zlen = xhi - xlo, yhi - ylo, zhi - zlo
-zhi_new, zlo_new = zlo + zlen * z_ratio / 2, zlo - zlen * z_ratio / 2
-
-
-print(xhi, yhi)
+zhi_new, zlo_new = zlo + (zlen/2) + (zlen * z_ratio / 2), zlo + (zlen/2) - (zlen * z_ratio / 2)
+print(zhi_new, zlo_new)
 
 with open(input_file, 'r') as file:
     data = file.readlines()

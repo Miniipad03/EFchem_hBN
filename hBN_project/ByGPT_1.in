@@ -6,7 +6,7 @@ dimension       3
 boundary        p p p
 
 # Box and atom creation
-read_data       bilayer_hBN.in.data
+read_data       monolayer_hBN.in.data
 
 mass            1 10.811 # B
 mass            2 14.0067 # N
@@ -23,7 +23,7 @@ pair_coeff      2 2 coul/shield 0.69
 neighbor        0.5 bin
 neigh_modify    every 4
 neigh_modify    delay 0
-neigh_modify    check yes page 800000 one 80000
+neigh_modify    check yes page 1000000 one 100000
 
 # Timestep
 timestep        0.0025
@@ -43,4 +43,4 @@ dump            1 all atom 100 hBN.lammpstrj
 dump_modify     1 sort id
 
 # Running the simulation
-run             10000
+run             100000
